@@ -1,0 +1,66 @@
+@startuml
+
+title MasterMind
+
+class MasterMind{
+    +play()
+    -isResumed()
+}
+class Game{
+    -SecretCombination secret
+    +play()
+    -isWinner(Combination)
+}
+
+class Combination {
+    -List<Color> colors
+    + MAX_LENGTH = 4
+    +List<Color>random()
+    -List<Color>parse(String labelCombination)
+    -String[] format(String labelCOmbination)
+    +boolean equalTo(Combination combination)
+}
+
+class SecretCombination extends Combination{
+    +getResult()
+    +count(String label , Combination combination)
+    -getFeedBack
+}
+
+class Console{
+    +Combination readCombination()
+    +showWhitesAndBlack()
+    +void out()
+}
+
+enum Color{
+    ORANGE,
+    YELLOW,
+    PURPLE,
+    RED,
+    -Map<String,Color>LABELS
+    +String getColorsAvailables()
+    +String getLabel()
+    +boolean containsLabel()
+}
+
+enum KeyPeg{
+    BLACK,
+    WHITE,
+    +String getLabel()
+}
+
+MasterMind *-down-> Game
+MasterMind ..> Console
+Game ..>Console
+Game ..> Combination
+Game *--> SecretCombination 
+
+Console..>Combination
+Console ..> SecretCombination
+
+Combination *-down-> Color
+SecretCombination *-down-> Color
+SecretCombination ..> KeyPeg
+
+@enduml
